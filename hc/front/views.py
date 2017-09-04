@@ -60,6 +60,14 @@ def my_checks(request):
     return render(request, "front/my_checks.html", ctx)
 
 
+@login_required
+def blogs(request):
+    ctx = {
+        "page": "blog"
+    }
+
+    return render(request, "front/blogs.html", ctx)
+
 def _welcome_check(request):
     check = None
     if "welcome_code" in request.session:
