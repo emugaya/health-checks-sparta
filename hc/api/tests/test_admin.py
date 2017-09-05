@@ -16,5 +16,5 @@ class ApiAdminTestCase(BaseTestCase):
 
         ch = Channel(user=self.alice, kind="pushbullet", value="test-token")
         ch.save()
-        self.assertTrue("pushbullet", ch.kind)
+        self.assertEqual("pushbullet", ch.kind)
 
