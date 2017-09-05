@@ -1,7 +1,7 @@
 from django.core import mail
 
 from hc.test import BaseTestCase
-from hc.accounts.models import Member
+from hc.accounts.models import Member, User
 from hc.api.models import Check
 
 
@@ -18,8 +18,12 @@ class ProfileTestCase(BaseTestCase):
         self.alice.profile.refresh_from_db()
         token = self.alice.profile.token
         ### Assert that the token is set
-
+        self.assertTrue(token)
         ### Assert that the email was sent and check email content
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject,
+                         'Set password on healthchecks.io')
+        assert "Here's a link to set a password" in mail.outbox[0].body
 
     def test_it_sends_report(self):
         check = Check(name="Test Check", user=self.alice)
@@ -28,6 +32,11 @@ class ProfileTestCase(BaseTestCase):
         self.alice.profile.send_report()
 
         ###Assert that the email was sent and check email content
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject,
+                         'Monthly Report')
+        assert ("This is a monthly report sent by healthchecks.io."
+                in mail.outbox[0].body)
 
     def test_it_adds_team_member(self):
         self.client.login(username="alice@example.org", password="password")
@@ -45,6 +54,12 @@ class ProfileTestCase(BaseTestCase):
         self.assertTrue("frank@example.org" in member_emails)
 
         ###Assert that the email was sent and check email content
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn('You have been invited to join',
+                      mail.outbox[0].subject)
+                         
+        self.assertIn("You will be able to manage their existing",
+                      mail.outbox[0].body)
 
     def test_add_team_member_checks_team_access_allowed_flag(self):
         self.client.login(username="charlie@example.org", password="password")
@@ -108,3 +123,16 @@ class ProfileTestCase(BaseTestCase):
         self.assertNotContains(r, "bobs-tag.svg")
 
     ### Test it creates and revokes API key
+    def test_creates_api_key(self):
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post("/accounts/profile/",
+                                    {"create_api_key": '1'})
+        api_key = User.objects.get(email='alice@example.org').profile.api_key
+        self.assertTrue(api_key)
+
+    def test_revokes_api_key(self):
+        self.client.login(username="alice@example.org", password="password")
+        response = self.client.post("/accounts/profile/",
+                                    {"revoke_api_key": '1'})
+        api_key = User.objects.get(email='alice@example.org').profile.api_key
+        self.assertFalse(api_key)
