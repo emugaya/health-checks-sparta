@@ -17,6 +17,7 @@ from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
                             TimeoutForm)
+from hc.front.models import Blog
 
 
 # from itertools recipes:
@@ -62,7 +63,10 @@ def my_checks(request):
 
 @login_required
 def blogs(request):
+    posts = Blog.objects.filter(user=request.team.user)
+    posts = list(posts)
     ctx = {
+        "posts": posts,
         "page": "blog"
     }
 
