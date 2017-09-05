@@ -26,3 +26,4 @@ class EnsureTriggersTestCase(TestCase):
         check.save()
         check.refresh_from_db()
         self.assertGreater(check.alert_after, alert_after)
+

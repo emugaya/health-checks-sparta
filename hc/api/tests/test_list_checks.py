@@ -33,15 +33,15 @@ class ListChecksTestCase(BaseTestCase):
 
     def test_it_works(self):
         r = self.get()
-        ### Assert the response status code
+        self.assertEqual(r.status_code, 200)
 
         doc = r.json()
         self.assertTrue("checks" in doc)
 
         checks = {check["name"]: check for check in doc["checks"]}
-        ### Assert the expected length of checks
-        ### Assert the checks Alice 1 and Alice 2's timeout, grace, ping_url, status,
-        ### last_ping, n_pings and pause_url
+        self.assertEqual(len(checks), 2)
+        self.assertDictEqual(checks['Alice 1'], self.a1.to_dict())
+        self.assertDictEqual(checks['Alice 2'], self.a2.to_dict())
 
     def test_it_shows_only_users_checks(self):
         bobs_check = Check(user=self.bob, name="Bob 1")
@@ -53,4 +53,7 @@ class ListChecksTestCase(BaseTestCase):
         for check in data["checks"]:
             self.assertNotEqual(check["name"], "Bob 1")
 
-    ### Test that it accepts an api_key in the request
+    def test_that_it_accepts_api_key(self):
+        payload = json.dumps(dict(api_key="abc"))
+        r = self.client.generic("GET", "/api/v1/checks/", data=payload, content_type="application/json")
+        self.assertEqual(r.status_code, 200)
