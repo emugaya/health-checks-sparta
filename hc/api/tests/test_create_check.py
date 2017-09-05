@@ -87,5 +87,3 @@ class CreateCheckTestCase(BaseTestCase):
         self.assertEquals(response.status_code, 400)
         error = "timeout is too large"
         self.assertEqual(json.loads(force_text(response.content))['error'], error)
-
-    ### Test for the assignment of channels
