@@ -1,6 +1,6 @@
 # healthchecks
 
-[![Build Status](https://travis-ci.org/andela/health-checks-sparta.svg?branch=master)](https://travis-ci.org/andela/health-checks-sparta)
+[![Build Status](https://travis-ci.org/andela/health-checks-sparta.svg?branch=master)](https://travis-ci.org/andela/health-checks-sparta)     [![Coverage Status](https://coveralls.io/repos/github/andela/health-checks-sparta/badge.svg?branch=ch-integrateTravis-150783085)](https://coveralls.io/github/andela/health-checks-sparta?branch=ch-integrateTravis-150783085)
 
 ![Screenshot of Welcome page](/stuff/screenshots/welcome.png?raw=true "Welcome Page")
 
