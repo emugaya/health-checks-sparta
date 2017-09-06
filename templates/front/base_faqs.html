@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-2">
+
+    <ul class="docs-nav">
+        <li {% if section == "home" %} class="active" {% endif %}>
+            <!-- Dummy FAQS -->
+            <a href="{% url 'hc-faqs' %}">Is Healthchecks Free?</a>
+            <ul>
+                <li><a href="{% url 'hc-faqs' %}#setting_up">What is the essence of using healthchecks?</a></li>
+                <li><a href="{% url 'hc-faqs' %}#team_access">How does team access work on healthchecks?</a></li>
+                <li><a href="{% url 'hc-faqs' %}#pings">How do pings in healthchecks work?</a></li>
+                <li><a href="{% url 'hc-faqs' %}#notifications">How do I manage my notifications on healthchecks?</a></li>
+            </ul>
+        </li>
+        <li {% if section == "api" %} class="active" {% endif %}>
+            <a href="{% url 'hc-docs-api' %}">REST API</a>
+        </li>
+    </ul>
+
+    </div>
+    <div class="col-sm-10">
+        {% block docs_content %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}
