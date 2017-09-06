@@ -1,0 +1,49 @@
+{% extends "front/base_faqs.html" %}
+{% load staticfiles %}
+
+{% block title %}FAQs - healthchecks.io{% endblock %}
+
+{% block faqs_content %}
+
+<h2>Frequently Asked Questions</h2>
+<p>
+Everyday, we receive a bunch of questions regarding our services via emails or chat forums. It's our pleasure to provide the best experience for our users and therefore, we have addressed most of the recurring issues here. 
+</p>
+<p>Feel free to contact us if you did not find your issue resolved.</p>
+
+<h2>What specifically does healthchecks do for me?</h2>
+<p>
+    Healthchecks is a watchdog for your cron jobs. It's a web server that listens for pings from your cron jobs, plus a web interface. You may read our 
+    <a href="{% url 'hc-docs' %}">docs.</a>
+</p>
+
+<a name="free"></a>
+<h3>Is healthchecks free?</h3>
+
+<p>
+   Healthchecks is open source, you can get the code on github. However, we won't mind if you bought us coffee, or subscribe to one of our paid plans to get amazing offers. You might as well like to go through our 
+   <a href="{% url 'hc-pricing' %}">pricing table</a>
+</p>
+
+<a name="team_access"></a>
+<h3>How does team access work?</h3>
+<p>
+    This is how team access in healthchecks work. We Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in ipsum id orci porta dapibus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam
+    vel, ullamcorper sit amet ligula. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt. Donec sollicitudin molestie malesuada. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.
+</p>
+
+<a name="pings"></a>
+<h3>What does it mean to ping?</h3>
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in ipsum id orci porta dapibus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Cras ultricies
+    ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt. Donec sollicitudin molestie malesuada. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.
+</p>
+
+<a name="notifications"></a>
+<h3>How do I manage my notifications on healthchecks?</h3>
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque in ipsum id orci porta dapibus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Cras ultricies
+    ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt. Donec sollicitudin molestie malesuada. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.
+</p>
+
+{% endblock %}
