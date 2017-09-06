@@ -8,3 +8,10 @@ class FAQnAnswers(models.Model):
     answer = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
 
+    def add_question(self):
+        """ Admin uses this to add more QnAs """
+        self.save()
+
+    def __str__(self):
+        return self.question
+
