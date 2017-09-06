@@ -16,7 +16,7 @@ from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
-                            TimeoutForm)
+                            TimeoutForm, AddBlogPostForm)
 from hc.front.models import Blog
 
 
@@ -71,6 +71,20 @@ def blogs(request):
     }
 
     return render(request, "front/blogs.html", ctx)
+
+@login_required()
+def add_blog_post(request):
+    if request.method == 'POST':
+        form = AddBlogPostForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["blog_title"]
+            category = form.cleaned_data["category"]
+            story = form.cleaned_data["story"]
+            user = request.user
+            blog = Blog(title=title, category=category, story=story, date_added='', user=user)
+            blog.save()
+            return redirect("hc-blogs")
+    return render(request, "front/add_blog_post.html")
 
 def _welcome_check(request):
     check = None
