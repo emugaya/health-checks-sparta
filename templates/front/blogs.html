@@ -10,6 +10,7 @@
     display: inline-block!important;
 }
 
+
 </style>
 <div class="row">
     <div class="col-sm-10">
@@ -31,10 +32,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" href="#{{ post.id}}">{{ post.title }}</a>
+                                <a data-toggle="collapse" href="#{{ post.id}}"><strong>{{ post.title }}</strong></a>
+                                <span id="edit-glyph" class="glyphicon glyphicon-remove pull-right"></span>
+                                <span id="remove-glyph" class="glyphicon glyphicon-pencil pull-right"></span>
                                 <a href="/blog/{{ post.category}}">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                    <small class="pull-right category">{{ post.category }}</small>
+                                    <small class="category">({{ post.category }})</small>
                                 </a>
                             </h4>
                         </div>
