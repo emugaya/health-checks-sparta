@@ -155,8 +155,12 @@ else:
     warnings.warn("local_settings.py not found, using defaults")
 
 if os.getcwd() == "/app":
-    import dj_database_url
+    from dj_database_url import parse
+    DATABASE_URL = os.getenv('DATABASE_URL')
     DATABASES = {
-        "defaults": dj_database_url.config(default="postgres://localhost")
+        "defaults": parse(
+            DATABASE_URL,
+            conn_max_age=600
+            )
     }
     
