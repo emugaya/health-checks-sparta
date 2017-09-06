@@ -638,3 +638,9 @@ def privacy(request):
 
 def terms(request):
     return render(request, "front/terms.html", {})
+
+
+from django.http import HttpResponse
+
+def faqs(request):
+    return HttpResponse("This is where data fetched from db goes to")
