@@ -21,14 +21,13 @@ class SendAlertsTestCase(BaseTestCase):
             check.save()
 
         result = Command().handle_many()
-        assert result, "handle_many should return True"
+        self.assertTrue(result)
 
         handled_names = []
         for args, kwargs in mock.call_args_list:
             handled_names.append(args[0].name)
 
-        assert set(names) == set(handled_names)
-        ### The above assert fails. Make it pass
+        self.assertSetEqual(set(names), set(handled_names))
 
     def test_it_handles_grace_period(self):
         check = Check(user=self.alice, status="up")
@@ -37,6 +36,13 @@ class SendAlertsTestCase(BaseTestCase):
         check.save()
 
         # Expect no exceptions--
-        Command().handle_one(check)
+        response = Command().handle_one(check)
+        self.assertTrue(response)
 
-    ### Assert when Command's handle many that when handle_many should return True
+    @patch("hc.api.management.commands.sendalerts.Command.handle_many")
+    def test_it_handles_many(self, mock):
+
+        result = Command().handle_many()
+        print(result)
+        self.assertTrue(result)
+

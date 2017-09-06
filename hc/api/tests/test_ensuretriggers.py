@@ -13,12 +13,12 @@ class EnsureTriggersTestCase(TestCase):
         Command().handle()
 
         check = Check.objects.create()
-        assert check.alert_after is None
+        self.assertIsNone(check.alert_after)
 
         check.last_ping = timezone.now()
         check.save()
         check.refresh_from_db()
-        assert check.alert_after is not None
+        self.assertIsNotNone(check.alert_after)
 
         alert_after = check.alert_after
 
