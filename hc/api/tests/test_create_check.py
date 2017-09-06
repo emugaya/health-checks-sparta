@@ -33,9 +33,7 @@ class CreateCheckTestCase(BaseTestCase):
         self.assertEqual(r.status_code, 201)
 
         doc = r.json()
-
-        assert "ping_url" in doc
-
+        self.assertIn("ping_url", doc)
         self.assertEqual(doc["name"], "Foo")
         self.assertEqual(doc["tags"], "bar,baz")
         self.assertIsNone(doc["last_ping"])
