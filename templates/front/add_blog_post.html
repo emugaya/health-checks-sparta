@@ -7,29 +7,34 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-sm-10">
-        <h1>My Blog Posts</h1>
+    <div class="col-sm-12">
+        <h1>Add Blog Post</h1>
     </div>
-    <div class="col-sm-2">
-        <h1><button class="btn btn-success btn-lg">Add Post +</button></h1>
-    </div>
-    <div class="col-sm-10">
-            {% if posts %}
-                {% for post in posts %}
-                    <div class="panel-group">
-                      <div class="panel panel-default">
-                        <div class="panel-heading">
-                          <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#{{ post.id}}">{{ post.title }}</a>
-                          </h4>
-                        </div>
-                        <div id="{{ post.id}}" class="panel-collapse collapse">
-                            <div class="story">{{ post.story }}</div>
-                        </div>
-                      </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
+
+    <div class="col-sm-8">
+        <form method="post" class="blog-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="blog_title" class="form-control" placeholder="Title" maxlength="200">
+            </div>
+            <div class="form-group">
+                <select class="form-control" name="category">
+                    <option value="Technology">Technology</option>
+                    <option value="Science">Science</option>
+                    <option value="Food">Food</option>
+                    <option value="Art">Art</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Health">Health</option>
+                    <option value="Education">Education</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <textarea id="post-text-area" name="story" class="form-control" placeholder="Post" rows="25"></textarea>
+            </div>
+            <div class="form-group text-right">
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -42,5 +47,11 @@
 <script src="{% static 'js/nouislider.min.js' %}"></script>
 <script src="{% static 'js/clipboard.min.js' %}"></script>
 <script src="{% static 'js/checks.js' %}"></script>
+<script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
+<script>
+  tinymce.init({
+    selector: '#post-text-area'
+  });
+</script>
 {% endcompress %}
 {% endblock %}
