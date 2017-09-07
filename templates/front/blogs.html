@@ -27,7 +27,7 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" href="#{{ post.id}}"><strong>{{ post.title }}</strong></a>
-                                <a href="/blog/delete/{{ post.id }}">
+                                <a href="/blog/delete/{{ post.id }}"  onclick="return(confirm('Are you sure you want to delete this post?'))">
                                     <span id="remove-glyph" class="glyphicon glyphicon-remove pull-right"></span>
                                 </a>
                                 <a href="/blog/edit/{{ post.id }}">
