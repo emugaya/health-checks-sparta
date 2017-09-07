@@ -46,6 +46,11 @@ class CreateCheckTestCase(BaseTestCase):
         self.assertEqual(check.tags, "bar,baz")
         self.assertEqual(check.timeout.total_seconds(), 3600)
         self.assertEqual(check.grace.total_seconds(), 60)
+        ch = Channel.objects.create(user=self.alice, kind="slack", email_verified=True)
+        ch.checks.add(check)
+        ch.save()
+        self.assertEqual(ch.kind, "slack")
+        self.assertEqual(ch.user, self.alice)
 
     def test_it_accepts_api_key_in_header(self):
         response = self.post(dict(name="foo"), HTTP_X_API_KEY="abc")
