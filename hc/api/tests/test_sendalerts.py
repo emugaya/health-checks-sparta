@@ -38,11 +38,3 @@ class SendAlertsTestCase(BaseTestCase):
         # Expect no exceptions--
         response = Command().handle_one(check)
         self.assertTrue(response)
-
-    @patch("hc.api.management.commands.sendalerts.Command.handle_many")
-    def test_it_handles_many(self, mock):
-
-        result = Command().handle_many()
-        print(result)
-        self.assertTrue(result)
-
