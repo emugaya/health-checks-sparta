@@ -122,6 +122,7 @@ def edit_blog_post(request, id):
 def single_blog(request, id):
     post = Blog.objects.filter(id=id).first()
     # Reformat date to acquire readable value
+    url = request.build_absolute_uri('/')
     try:
         date = post.get_date()
     except IndexError:
@@ -129,7 +130,8 @@ def single_blog(request, id):
 
     ctx = {
         "post": post,
-        "date": date
+        "date": date,
+        "url": url
     }
 
     return render(request, "front/single_blog.html", ctx)
