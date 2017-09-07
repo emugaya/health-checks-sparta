@@ -13,3 +13,8 @@
 #remove-glyph {
     color: red;
 }
+
+#share-glyph {
+    color: green;
+    margin-right: 5%;
+}
