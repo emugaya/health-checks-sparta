@@ -17,6 +17,7 @@ from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
                             TimeoutForm)
+from hc.front.models import FAQnAnswers
 
 
 # from itertools recipes:
@@ -555,4 +556,7 @@ def terms(request):
 
 
 def faqs(request):
-    return render(request, "front/faqs.html", {})
+    qnas = FAQnAnswers.objects.all()
+    qnas_list = list(qnas)
+    ctx = {"qnas": qnas_list}
+    return render(request, "front/faqs.html", ctx)
