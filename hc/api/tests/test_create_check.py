@@ -64,7 +64,7 @@ class CreateCheckTestCase(BaseTestCase):
     def test_it_handles_invalid_json(self):
         response = self.post(dict(name=1, api_key="abc"))
         self.assertEqual(response.status_code, 400)
-        error = "could not parse request body"
+        error = "name is not a string"
         self.assertEqual(json.loads(force_text(response.content))['error'], error)
 
     def test_it_rejects_wrong_api_key(self):
