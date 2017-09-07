@@ -127,6 +127,8 @@ def single_blog(request, id):
         date = post.get_date()
     except IndexError:
         return render(request, "page_not_found.html")
+    except AttributeError:
+        return render(request, "page_not_found.html")
 
     ctx = {
         "post": post,
