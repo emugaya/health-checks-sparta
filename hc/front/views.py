@@ -113,6 +113,12 @@ def edit_blog_post(request, id):
     }
     return render(request, "front/edit_blog_post.html", ctx)
 
+@login_required()
+def delete_blog_post(request, id):
+    post = Blog.objects.filter(id=id)
+    post.delete()
+    return redirect("hc-blogs")
+
 def _welcome_check(request):
     check = None
     if "welcome_code" in request.session:
