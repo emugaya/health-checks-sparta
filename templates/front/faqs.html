@@ -7,11 +7,9 @@
 
     <ul class="docs-nav">
         <!-- Dummy FAQS -->
-        <li><a href="{% url 'hc-faqs' %}">What Specifically does healthchecks do for me?</a></li>
-        <li><a href="{% url 'hc-faqs' %}#free">Is healthchecks free?</a></li>
-        <li><a href="{% url 'hc-faqs' %}#team_access">How does team access work on healthchecks?</a></li>
-        <li><a href="{% url 'hc-faqs' %}#pings">What does it mean to ping?</a></li>
-        <li><a href="{% url 'hc-faqs' %}#notifications">How do I manage my notifications on healthchecks?</a></li>
+        {% for qna in qnas %}
+        <li><a href="{% url 'hc-faqs' %}#{{ qna.question }}">{{ qna.question }}</a></li>
+        {% endfor %}
     </ul>
     </div>
     <div class="col-sm-10">
