@@ -5440,3 +5440,7 @@ button.close {
 .glyphicon-pencil:before {
   content: "\270f";
 }
+
+.glyphicon-remove:before {
+  content: "\e014";
+}
