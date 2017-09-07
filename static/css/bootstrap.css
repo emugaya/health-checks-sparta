@@ -5444,3 +5444,7 @@ button.close {
 .glyphicon-remove:before {
   content: "\e014";
 }
+
+.glyphicon-share:before {
+  content: "\e066";
+}
