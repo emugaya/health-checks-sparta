@@ -1,6 +1,6 @@
 # healthchecks
 
-[![Build Status](https://travis-ci.org/andela/health-checks-sparta.svg?branch=master)](https://travis-ci.org/andela/health-checks-sparta)     [![Coverage Status](https://coveralls.io/repos/github/andela/health-checks-sparta/badge.svg?branch=ch-integrateTravis-150783085)](https://coveralls.io/github/andela/health-checks-sparta?branch=ch-integrateTravis-150783085)
+[![Build Status](https://travis-ci.org/andela/health-checks-sparta.svg?branch=develop)](https://travis-ci.org/andela/health-checks-sparta)     [![Coverage Status](https://coveralls.io/repos/github/andela/health-checks-sparta/badge.svg?branch=ch-integrateTravis-150783085)](https://coveralls.io/github/andela/health-checks-sparta?branch=ch-integrateTravis-150783085)
 
 ![Screenshot of Welcome page](/stuff/screenshots/welcome.png?raw=true "Welcome Page")
 
@@ -12,7 +12,7 @@
 
 healthchecks is a watchdog for your cron jobs. It's a web server that listens for pings from your cron jobs, plus a web interface.
 
-It is live here: [http://healthchecks.io/](http://healthchecks.io/)
+It is live here: [https://health-checks-sparta.herokuapp.com/](https://health-checks-sparta.herokuapp.com/)
 
 The building blocks are:
 
