@@ -18,6 +18,10 @@
         <strong>Written on: </strong>
         {{ date}}
     </div>
+
+    <div class="col-sm-12 shareable-link">
+        <strong>Shareable Link</strong><input type="text" class="form-control" value="{{ url }}/blog/{{ post.id }}" readonly>
+    </div>
     {% endif %}
 </div>
 
