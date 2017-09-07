@@ -109,10 +109,10 @@ def edit_blog_post(request, id):
             post.update(title=title, category=category, story=story)
             return redirect("hc-blogs")
 
-    post = list(Blog.objects.filter(id=id))
+    post = Blog.objects.filter(id=id).first()
     try:
         ctx = {
-            "post": post[0]
+            "post": post
         }
     except IndexError:
         return render(request, "page_not_found.html")
@@ -120,15 +120,15 @@ def edit_blog_post(request, id):
 
 
 def single_blog(request, id):
-    post = list(Blog.objects.filter(id=id))
+    post = Blog.objects.filter(id=id).first()
     # Reformat date to acquire readable value
     try:
-        date = post[0].date_added.split(' ')[0]
+        date = post.get_date()
     except IndexError:
         return render(request, "page_not_found.html")
 
     ctx = {
-        "post": post[0],
+        "post": post,
         "date": date
     }
 
