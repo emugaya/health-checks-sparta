@@ -66,7 +66,7 @@ def my_checks(request):
 def blogs(request):
     posts = Blog.objects.filter(user=request.team.user)
     page = request.GET.get('page', 1)
-    paginator = Paginator(posts, 3)
+    paginator = Paginator(posts, 10)
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
