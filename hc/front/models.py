@@ -7,6 +7,9 @@ class Blog(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     user = models.TextField()
 
+    def get_date(self):
+        # Return only date without time
+        return self.date_added.split(' ')[0]
 
     def __str__(self):
         return self.title
