@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^blog/$', views.blogs, name="hc-blogs"),
     url(r'^blog/add/$', views.add_blog_post, name="hc-add-post"),
     url(r'^blog/edit/(\d+)/$', views.edit_blog_post, name="hc-edit-post"),
+    url(r'^blog/delete/(\d+)/$', views.delete_blog_post, name="hc-delete-post"),
     url(r'^checks/add/$', views.add_check, name="hc-add-check"),
     url(r'^checks/([\w-]+)/', include(check_urls)),
     url(r'^integrations/', include(channel_urls)),
