@@ -9,7 +9,7 @@ class Blog(models.Model):
 
     def get_date(self):
         # Return only date without time
-        return self.date_added.split(' ')[0]
+        return str(self.date_added).split(' ')[0]
 
     def __str__(self):
         return self.title
