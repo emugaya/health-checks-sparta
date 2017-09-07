@@ -92,6 +92,14 @@ class NotifyTestCase(BaseTestCase):
             "get", "http://bar", headers={"User-Agent": "healthchecks.io"},
             timeout=5)
 
+    @patch("hc.api.transports.requests.request", side_effect=ConnectionError)
+    def test_webhook_handles_connection_errors(self, mock_get):
+        self._setup_data("webhook", "http://example")
+        self.channel.notify(self.check)
+
+        n = Notification.objects.get()
+        self.assertEqual(n.error, "Connection failed")
+
     def test_email(self):
         self._setup_data("email", "alice@example.org")
         self.channel.notify(self.check)
@@ -221,5 +229,3 @@ class NotifyTestCase(BaseTestCase):
         args, kwargs = mock_post.call_args
         json = kwargs["json"]
         self.assertEqual(json["message_type"], "CRITICAL")
-
-    ### Test that the web hooks handle connection errors and error 500s
