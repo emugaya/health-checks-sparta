@@ -44,7 +44,7 @@ class AddBlogPostForm(forms.Form):
         ("Education", "Education")
     )
     category = forms.ChoiceField(choices=CHOICES)
-    story = forms.CharField(max_length=None)
+    story = forms.CharField(max_length=None, required=True)
 
 
 class AddWebhookForm(forms.Form):
