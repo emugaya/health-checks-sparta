@@ -642,8 +642,8 @@ def terms(request):
     return render(request, "front/terms.html", {})
 
 
-def faqs(request):
+def support(request):
     qnas = FAQnAnswers.objects.all()
     qnas_list = list(qnas)
     ctx = {"qnas": qnas_list}
-    return render(request, "front/faqs.html", ctx)
+    return render(request, "front/support.html", ctx)
