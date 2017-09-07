@@ -93,6 +93,26 @@ def add_blog_post(request):
             return redirect("hc-blogs")
     return render(request, "front/add_blog_post.html")
 
+@login_required()
+def edit_blog_post(request, id):
+    if request.method == 'POST':
+        form = AddBlogPostForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["blog_title"]
+            category = form.cleaned_data["category"]
+            story = form.cleaned_data["story"]
+            post = Blog.objects.filter(id=id)
+            post.title = title
+            post.category = category
+            post.story = story
+            post.update(title=title, category=category, story=story)
+            return redirect("hc-blogs")
+    post = list(Blog.objects.filter(id=id))
+    ctx = {
+        "post": post[0]
+    }
+    return render(request, "front/edit_blog_post.html", ctx)
+
 def _welcome_check(request):
     check = None
     if "welcome_code" in request.session:
