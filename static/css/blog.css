@@ -1,15 +1,15 @@
-.story{
+.story {
     padding-left: 2%;
 }
 
-.category{
+.category {
     color: blue;
 }
 
-#edit-glyph{
+#edit-glyph {
     color: blue;
 }
 
-#remove-glyph{
+#remove-glyph {
     color: red;
 }
