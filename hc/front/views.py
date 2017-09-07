@@ -66,7 +66,7 @@ def my_checks(request):
 def blogs(request):
     posts = Blog.objects.filter(user=request.team.user)
     page = request.GET.get('page', 1)
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, 3)
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
@@ -120,12 +120,17 @@ def edit_blog_post(request, id):
 def single_blog(request, id):
     post = list(Blog.objects.filter(id=id))
     # Reformat date to acquire readable value
-    date = post[0].date_added.split(' ')[0]
+    try:
+        date = post[0].date_added.split(' ')[0]
+    except IndexError:
+        return render(request, "page_not_found.html")
 
     ctx = {
         "post": post[0],
         "date": date
     }
+
+
     return render(request, "front/single_blog.html", ctx)
 
 
