@@ -20,6 +20,7 @@ from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
 from hc.front.models import Blog
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
 # from itertools recipes:
 def pairwise(iterable):
     "s -> (s0,s1), (s1,s2), (s2, s3), ..."
@@ -79,6 +80,7 @@ def blogs(request):
 
     return render(request, "front/blogs.html", ctx)
 
+
 @login_required()
 def add_blog_post(request):
     if request.method == 'POST':
@@ -92,6 +94,7 @@ def add_blog_post(request):
             blog.save()
             return redirect("hc-blogs")
     return render(request, "front/add_blog_post.html")
+
 
 @login_required()
 def edit_blog_post(request, id):
@@ -113,11 +116,25 @@ def edit_blog_post(request, id):
     }
     return render(request, "front/edit_blog_post.html", ctx)
 
+
+def single_blog(request, id):
+    post = list(Blog.objects.filter(id=id))
+    # Reformat date to acquire readable value
+    date = post[0].date_added.split(' ')[0]
+
+    ctx = {
+        "post": post[0],
+        "date": date
+    }
+    return render(request, "front/single_blog.html", ctx)
+
+
 @login_required()
 def delete_blog_post(request, id):
     post = Blog.objects.filter(id=id)
     post.delete()
     return redirect("hc-blogs")
+
 
 def _welcome_check(request):
     check = None
