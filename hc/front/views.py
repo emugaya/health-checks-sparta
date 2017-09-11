@@ -16,7 +16,9 @@ from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
-                            TimeoutForm)
+                            TimeoutForm, AddBlogPostForm)
+from hc.front.models import Blog
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # from itertools recipes:
@@ -58,6 +60,90 @@ def my_checks(request):
     }
 
     return render(request, "front/my_checks.html", ctx)
+
+
+@login_required
+def blogs(request):
+    posts = Blog.objects.filter(user=request.team.user)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(posts, 10)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    ctx = {
+        "posts": posts,
+        "page": "blog"
+    }
+
+    return render(request, "front/blogs.html", ctx)
+
+
+@login_required()
+def add_blog_post(request):
+    if request.method == 'POST':
+        form = AddBlogPostForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["blog_title"]
+            category = form.cleaned_data["category"]
+            story = form.cleaned_data["story"]
+            user = request.user
+            blog = Blog(title=title, category=category, story=story, date_added='', user=user)
+            blog.save()
+            return redirect("hc-blogs")
+    return render(request, "front/add_blog_post.html")
+
+
+@login_required()
+def edit_blog_post(request, id):
+    if request.method == 'POST':
+        form = AddBlogPostForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["blog_title"]
+            category = form.cleaned_data["category"]
+            story = form.cleaned_data["story"]
+
+            post = Blog.objects.filter(id=id)
+            post.update(title=title, category=category, story=story)
+            return redirect("hc-blogs")
+
+    post = Blog.objects.filter(id=id).first()
+    try:
+        ctx = {
+            "post": post
+        }
+    except IndexError:
+        return render(request, "page_not_found.html")
+    return render(request, "front/edit_blog_post.html", ctx)
+
+
+def single_blog(request, id):
+    post = Blog.objects.filter(id=id).first()
+    # Reformat date to acquire readable value
+    url = request.build_absolute_uri('/')
+    try:
+        date = post.get_date()
+    except IndexError:
+        return render(request, "page_not_found.html")
+    except AttributeError:
+        return render(request, "page_not_found.html")
+
+    ctx = {
+        "post": post,
+        "date": date,
+        "url": url
+    }
+
+    return render(request, "front/single_blog.html", ctx)
+
+
+@login_required()
+def delete_blog_post(request, id):
+    post = Blog.objects.filter(id=id)
+    post.delete()
+    return redirect("hc-blogs")
 
 
 def _welcome_check(request):

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load compress staticfiles %}
+
+{% block title %}View Blog Post - healthchecks.io{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    {% if post %}
+    <div class="col-sm-12">
+        <h1>{{ post.title }}</h1>
+    </div>
+    <div class="col-sm-9">
+        {{ post.story | safe}}
+    </div>
+    <div class="col-sm-12" align="right">
+        <strong>Written on: </strong>
+        {{ date}}
+    </div>
+
+    <div class="col-sm-12 shareable-link">
+        <strong>Shareable Link</strong><input type="text" class="form-control" value="{{ url }}blog/{{ post.id }}" readonly>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% compress js %}
+<script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/nouislider.min.js' %}"></script>
+<script src="{% static 'js/clipboard.min.js' %}"></script>
+<script src="{% static 'js/checks.js' %}"></script>
+<script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
+<script>
+  tinymce.init({
+    selector: '#post-text-area'
+  });
+
+</script>
+{% endcompress %}
+{% endblock %}
