@@ -1,0 +1,20 @@
+.story {
+    padding-left: 2%;
+}
+
+.category {
+    color: blue;
+}
+
+#edit-glyph {
+    color: blue;
+}
+
+#remove-glyph {
+    color: red;
+}
+
+#share-glyph {
+    color: green;
+    margin-right: 5%;
+}

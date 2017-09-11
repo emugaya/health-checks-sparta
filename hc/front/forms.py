@@ -32,6 +32,20 @@ class AddChannelForm(forms.ModelForm):
         value = self.cleaned_data["value"]
         return value.strip()
 
+class AddBlogPostForm(forms.Form):
+    blog_title = forms.CharField(max_length=200, required=True)
+    CHOICES = (
+        ("Technology", "Technology"),
+        ("Science", "Science"),
+        ("Food", "Food"),
+        ("Art", "Art"),
+        ("Travel", "Travel"),
+        ("Health", "Health"),
+        ("Education", "Education")
+    )
+    category = forms.ChoiceField(choices=CHOICES)
+    story = forms.CharField(max_length=None, required=True)
+
 
 class AddWebhookForm(forms.Form):
     error_css_class = "has-error"
