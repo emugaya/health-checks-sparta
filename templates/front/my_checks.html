@@ -9,7 +9,11 @@
     <div class="col-sm-12">
         <h1>
         {% if request.team == request.user.profile %}
+            {% if page == "checks" %}
             My Checks
+            {% else %}
+            Unresolved checks
+            {% endif %}
         {% else %}
             {{ request.team.team_name }}
         {% endif %}
@@ -42,6 +46,7 @@
     {% endif %}
     </div>
 </div>
+{% if not page == "unresolved" %}
 <div class="row">
     <div class="col-sm-12">
         <form method="post" action="{% url 'hc-add-check' %}" class="text-center">
@@ -50,7 +55,7 @@
         </form>
     </div>
 </div>
-
+{% endif %}
 <div id="update-name-modal" class="modal">
     <div class="modal-dialog">
         <form id="update-name-form" class="form-horizontal" method="post">
