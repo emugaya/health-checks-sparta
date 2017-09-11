@@ -15,10 +15,12 @@ class ProfileAdmin(admin.ModelAdmin):
             'all': ('css/admin/profiles.css',)
         }
 
-    list_display = ("id", "users", "reports_allowed", "next_report_date",
-                    "ping_log_limit")
+    list_display = ("id", "users", "daily_reports_allowed", "weekly_reports_allowed",
+                    "monthly_reports_allowed", "next_report_date", "ping_log_limit")
+
     search_fields = ["id", "user__email"]
-    list_filter = ("reports_allowed", "team_access_allowed",
+    list_filter = ("daily_reports_allowed", "weekly_reports_allowed",
+                   "monthly_reports_allowed", "team_access_allowed",
                    "next_report_date")
 
     def users(self, obj):
