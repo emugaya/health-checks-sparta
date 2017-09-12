@@ -39,7 +39,15 @@
   background: #f0ad4e;
 }
 
-#period-slider .noUi-value, #grace-slider .noUi-value {
+#reverse-grace-slider {
+    margin: 20px 50px 110px 50px;
+}
+
+#reverse-grace-slider.noUi-connect {
+  background: #f0ad4e;
+}
+
+#period-slider .noUi-value, #grace-slider .noUi-value, #reverse-grace-slider .noUi-value {
     width: 60px;
     margin-left: -30px;
 }
