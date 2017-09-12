@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load compress staticfiles %}
+
+{% block title %}Create Blog Post - healthchecks.io{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Add Blog Post</h1>
+    </div>
+
+    <div class="col-sm-8">
+        <form method="post" class="blog-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="blog_title">Title</label>
+                <input type="text" id="blog_title" name="blog_title" class="form-control" placeholder="Title" maxlength="200" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category">
+                    <option value="Technology">Technology</option>
+                    <option value="Science">Science</option>
+                    <option value="Food">Food</option>
+                    <option value="Art">Art</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Health">Health</option>
+                    <option value="Education">Education</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="post-text-area">Body</label>
+                <textarea id="post-text-area" name="story" class="form-control" rows="25"></textarea>
+            </div>
+            <div class="form-group text-right">
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% compress js %}
+<script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/nouislider.min.js' %}"></script>
+<script src="{% static 'js/clipboard.min.js' %}"></script>
+<script src="{% static 'js/checks.js' %}"></script>
+<script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
+<script>
+  tinymce.init({
+    selector: '#post-text-area'
+  });
+</script>
+{% endcompress %}
+{% endblock %}

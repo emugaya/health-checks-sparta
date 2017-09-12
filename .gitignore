@@ -2,9 +2,13 @@
 git__pycache__/
 *.pyc
 .coverage
+.idea
 hc.sqlite
 hc/local_settings.py
 static-collected
 
 .DS_Store
 static/.DS_Store
+.vscode/
+.env
+.idea/

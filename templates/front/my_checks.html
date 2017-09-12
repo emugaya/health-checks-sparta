@@ -7,13 +7,29 @@
 {% block content %}
 <div class="row">
     <div class="col-sm-12">
-        <h1>
+        <h1 class="mb-20">
         {% if request.team == request.user.profile %}
             My Checks
         {% else %}
             {{ request.team.team_name }}
         {% endif %}
         </h1>
+
+        <ul class="nav nav-tabs">
+            <li role="presentation" 
+                {% if page == "checks" %}
+                    class="active"
+                {% endif %}>
+                <a href="{% url 'hc-checks' %}">ALL</a>
+            </li>
+            <li role="presentation"
+                {% if page == "unresolved" %}
+                    class="active"
+                {% endif %}>
+                <a href="{% url 'hc-checks-unresolved' %}">UNRESOLVED</a>
+            </li>
+          </ul>
+
     </div>
     {% if tags %}
     <div id="my-checks-tags" class="col-sm-12">
@@ -42,6 +58,7 @@
     {% endif %}
     </div>
 </div>
+{% if not page == "unresolved" %}
 <div class="row">
     <div class="col-sm-12">
         <form method="post" action="{% url 'hc-add-check' %}" class="text-center">
@@ -50,7 +67,7 @@
         </form>
     </div>
 </div>
-
+{% endif %}
 <div id="update-name-modal" class="modal">
     <div class="modal-dialog">
         <form id="update-name-form" class="form-horizontal" method="post">
