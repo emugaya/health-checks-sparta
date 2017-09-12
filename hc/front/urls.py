@@ -31,6 +31,7 @@ channel_urls = [
 urlpatterns = [
     url(r'^$', views.index, name="hc-index"),
     url(r'^checks/$', views.my_checks, name="hc-checks"),
+    url(r'^checks/unresolved$', views.my_checks, name="hc-checks-unresolved"),
     url(r'^blog/$', views.blogs, name="hc-blogs"),
     url(r'^blog/(\d+)$', views.single_blog, name="hc-single-blog"),
     url(r'^blog/add/$', views.add_blog_post, name="hc-add-post"),
