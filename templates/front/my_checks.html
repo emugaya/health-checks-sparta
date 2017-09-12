@@ -133,6 +133,7 @@
             {% csrf_token %}
             <input type="hidden" name="timeout" id="update-timeout-timeout" />
             <input type="hidden" name="grace" id="update-timeout-grace" />
+            <input type="hidden" name="reverse" id="update-timeout-reverse" />
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="update-timeout-info text-center">
@@ -165,6 +166,22 @@
                     </div>
 
                     <div id="grace-slider"></div>
+
+                    <div class="update-timeout-info text-center">
+                        <span
+                            class="update-timeout-label"
+                            data-toggle="tooltip"
+                            title="When check is early, how much time to allow before expected time">
+                            Reverse Time
+                        </span>
+                        <span
+                            id="reverse-grace-slider-value"
+                            class="update-timeout-value">
+                            1 day
+                        </span>
+                    </div>
+
+                    <div id="reverse-grace-slider"></div>
 
                     <div class="update-timeout-terms">
                         <p>
