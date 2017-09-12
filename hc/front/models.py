@@ -15,7 +15,6 @@ class Blog(models.Model):
     def __str__(self):
         return self.title
 
-# Create your models here.
 class FAQnAnswers(models.Model):
     """ Model for FAQs """
     question = models.CharField(max_length=200)
