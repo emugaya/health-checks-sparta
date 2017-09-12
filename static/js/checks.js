@@ -88,6 +88,35 @@ $(function () {
     });
 
 
+    var reverseGraceSlider = document.getElementById("reverse-grace-slider");
+    noUiSlider.create(reverseGraceSlider, {
+        start: [20],
+        connect: "lower",
+        range: {
+            'min': [60, 60],
+            '33%': [3600, 3600],
+            '66%': [86400, 86400],
+            '83%': [604800, 604800],
+            'max': 2592000,
+        },
+        pips: {
+            mode: 'values',
+            values: [60, 1800, 3600, 43200, 86400, 604800, 2592000],
+            density: 4,
+            format: {
+                to: secsToText,
+                from: function() {}
+            }
+        }
+    });
+
+    reverseGraceSlider.noUiSlider.on("update", function(a, b, value) {
+        var rounded = Math.round(value);
+        $("#reverse-grace-slider-value").text(secsToText(rounded));
+        $("#update-timeout-reverse").val(rounded);
+    });
+
+
     $('[data-toggle="tooltip"]').tooltip();
 
     $(".my-checks-name").click(function() {
