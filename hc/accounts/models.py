@@ -71,6 +71,24 @@ class Profile(models.Model):
             self.next_report_date = now + timedelta(days=30)
             self.save()
 
+        def set_status():
+            if self.daily_reports_allowed:
+                return "daily"
+            elif self.weekly_reports_allowed:
+                return "weekly"
+            else:
+                return "monthly"
+
+        def set_checks():
+            if self.daily_reports_allowed:
+                return self.user.check_set.filter(created__contains=now.date()).order_by("created")
+
+            elif self.weekly_reports_allowed:
+                start_date = now.date() - timedelta(days=7)
+                return self.user.check_set.filter(created__gt=start_date).order_by("created")
+
+            return self.user.check_set.order_by("created")
+
         if self.daily_reports_allowed:
             save_daily_reports()
 
@@ -102,7 +120,8 @@ class Profile(models.Model):
         unsub_link = "%s%s?token=%s" % (settings.SITE_ROOT, path, token)
 
         ctx = {
-            "checks": self.user.check_set.order_by("created"),
+            "checks": set_checks(),
+            "status": set_status(),
             "now": now,
             "unsub_link": unsub_link
         }
