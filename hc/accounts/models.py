@@ -59,17 +59,43 @@ class Profile(models.Model):
         # reset next report date first:
         now = timezone.now()
 
-        if self.monthly_reports_allowed:
-            self.next_report_date = now + timedelta(days=30)
+        def save_daily_reports():
+            self.next_report_date = now + timedelta(days=1)
             self.save()
 
-        elif self.weekly_reports_allowed:
+        def save_weekly_reports():
             self.next_report_date = now + timedelta(days=7)
             self.save()
 
-        elif self.daily_reports_allowed:
-            self.next_report_date = now + timedelta(days=1)
+        def save_monthly_reports():
+            self.next_report_date = now + timedelta(days=30)
             self.save()
+
+        if self.daily_reports_allowed:
+            save_daily_reports()
+
+        elif self.weekly_reports_allowed and not all(
+                [self.daily_reports_allowed, self.monthly_reports_allowed]):
+            save_weekly_reports()
+
+        elif self.monthly_reports_allowed and not all(
+                [self.weekly_reports_allowed, self.daily_reports_allowed]):
+            save_monthly_reports()
+
+        elif self.daily_reports_allowed and \
+                (self.weekly_reports_allowed or self.monthly_reports_allowed):
+            save_daily_reports()
+
+        elif self.monthly_reports_allowed and self.weekly_reports_allowed:
+            save_weekly_reports()
+
+        elif all(
+                [self.monthly_reports_allowed, self.weekly_reports_allowed,
+                 self.daily_reports_allowed]):
+            save_daily_reports()
+
+        else:
+            save_daily_reports()
 
         token = signing.Signer().sign(uuid.uuid4())
         path = reverse("hc-unsubscribe-reports", args=[self.user.username])
