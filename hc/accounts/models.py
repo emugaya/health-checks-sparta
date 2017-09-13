@@ -81,7 +81,7 @@ class Profile(models.Model):
 
         def set_checks():
             if self.daily_reports_allowed:
-                return self.user.check_set.filter(created__contains=now.date()).order_by("created")
+                return self.user.check_set.filter(created__date=now.date()).order_by("created")
 
             elif self.weekly_reports_allowed:
                 start_date = now.date() - timedelta(days=7)
@@ -118,6 +118,7 @@ class Profile(models.Model):
         token = signing.Signer().sign(uuid.uuid4())
         path = reverse("hc-unsubscribe-reports", args=[self.user.username])
         unsub_link = "%s%s?token=%s" % (settings.SITE_ROOT, path, token)
+        print(set_checks())
 
         ctx = {
             "checks": set_checks(),
