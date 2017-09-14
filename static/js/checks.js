@@ -55,12 +55,39 @@ $(function () {
         }
     });
 
+    var intervalSlider = document.getElementById("interval-slider");
+    noUiSlider.create(intervalSlider, {
+        start: [20],
+        connect: "lower",
+        range: {
+            'min': [60, 60],
+            '33%': [3600, 3600],
+            '66%': [86400, 86400],
+            '83%': [604800, 604800],
+            'max': 2592000,
+        },
+        pips: {
+            mode: 'values',
+            values: [60, 1800, 3600, 43200, 86400, 604800, 2592000],
+            density: 4,
+            format: {
+                to: secsToText,
+                from: function() {}
+            }
+        }
+    });
+
     periodSlider.noUiSlider.on("update", function(a, b, value) {
         var rounded = Math.round(value);
         $("#period-slider-value").text(secsToText(rounded));
         $("#update-timeout-timeout").val(rounded);
     });
-
+    
+    intervalSlider.noUiSlider.on("update", function(a, b, value) {
+        var rounded = Math.round(value);
+        $("#interval-slider-value").text(secsToText(rounded));
+        $("#update-interval").val(rounded);
+    });
 
     var graceSlider = document.getElementById("grace-slider");
     noUiSlider.create(graceSlider, {
@@ -103,6 +130,29 @@ $(function () {
         $("#update-tags-input").val($this.data("tags"));
         $('#update-name-modal').modal("show");
         $("#update-name-input").focus();
+
+        return false;
+    });
+
+    $(".check-priority").click(function() {
+        var $this = $(this);
+
+        $("#update-priority-form").attr("action", $this.data("url"));
+        $("#update-priority-input").val($this.data("priority"));
+        $('#update-priority-modal').modal("show");
+        $("#update-priority-input").focus();
+
+        return false;
+    });
+
+    $(".escalation-matrix").click(function() {
+        var $this = $(this);
+        $("#escalation-matrix-form").attr("action", $this.data("url"));
+        $("#enabled-input").val($this.data("enabled"));
+        intervalSlider.noUiSlider.set($this.data("interval"))
+        $("#emails-input").val($this.data("list"));
+        $('#escalation-matrix-modal').modal({"show":true, "backdrop":"static"});
+        $("#enabled-input").focus();
 
         return false;
     });
