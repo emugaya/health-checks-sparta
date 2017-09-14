@@ -82,9 +82,24 @@
                 data-url="{% url 'hc-update-timeout' check.code %}"
                 data-timeout="{{ check.timeout.total_seconds }}"
                 data-grace="{{ check.grace.total_seconds }}"
-                class="btn btn-default timeout-grace">Change Period</a>
+                class="btn btn-default timeout-grace">Period</a>
 
             <a href="{% url 'hc-log' check.code %}" class="btn btn-default">Log</a>
+            <a
+                href="#"
+                data-priority="{{ check.priority }}"
+                data-url="{% url 'hc-update-priority' check.code %}"
+                class="btn btn-default check-priority">
+                Priority
+            </a>
+            <a
+                class="btn btn-default escalation-matrix"
+                data-enabled="{{ check.escalation_enabled }}"
+                data-interval="{{ check.escalation_interval.total_seconds }}"
+                data-list="{{ check.escalation_list }}"
+                data-url="{% url 'hc-escalation-matrix' check.code %}">
+                Escalation
+            </a>
         </div>
 
     </li>
