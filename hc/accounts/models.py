@@ -118,7 +118,6 @@ class Profile(models.Model):
         token = signing.Signer().sign(uuid.uuid4())
         path = reverse("hc-unsubscribe-reports", args=[self.user.username])
         unsub_link = "%s%s?token=%s" % (settings.SITE_ROOT, path, token)
-        print(set_checks())
 
         ctx = {
             "checks": set_checks(),
