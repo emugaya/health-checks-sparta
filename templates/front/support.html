@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container center">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#tutorials">Getting Started</a></li>
+      <li><a data-toggle="tab" href="#faqs">FAQs</a></li>
+    </ul>
+</div>
+<div class="container tab-content">
+    <div id="tutorials" class="tab-pane fade in active">
+        <h3>Welcome to Healthchecks</h3>
+        <p>You're using the best cron jobs monitoring tool in the 21st century. We made this short video to help you set up and get familiar with our services.</p>
+        <div style="position:relative;height:0;padding-bottom:56.25%" class="container">
+            <iframe src="https://www.youtube.com/embed/wKFkZWAH1vw?ecver=2" style="position:absolute;width:80%;height:80%;left:0" width="640" height="360" frameborder="0" allowfullscreen>
+            </iframe>
+        </div>
+        <h3>Premium Features</h3>
+        <div id="premium">
+            <p>
+            Hey, by now you've felt the awesomeness of your new way of doing things. Imagine we have more in our premium features package.
+            </p>
+        </div>
+    </div>
+    <div class="row tab-pane fade" id="faqs">
+        <div class="col-sm-2">
+        <ul class="docs-nav">
+            {% for qna in qnas %}
+            <li><a href="{% url 'hc-support' %}#{{ qna.question }}">{{ qna.question }}</a></li>
+            {% endfor %}
+        </ul>
+        </div>
+        <div class="col-sm-10">
+        {% block faqs_content %}
+        <h2>Frequently Asked Questions</h2>
+        <p>
+        Everyday, we receive a bunch of questions regarding our services via emails or chat forums. It's our pleasure to provide the best experience for our users and therefore, we have addressed most of the recurring issues here. 
+        </p>
+        <p>There are some tutorials to help get started, we hope you found them helpful. Feel free to contact us if you did not find your issue resolved. Our customer care would be glad to offer you assistance on our live chat.</p>
+
+        {% for qna in qnas %}
+         <a name="{{ qna.question }}"></a>
+         <h3>{{ qna.question }}</h3>
+         <p>
+             {{ qna.answer }}
+         </p>
+         {% endfor %}
+
+        {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
