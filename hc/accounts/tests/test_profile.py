@@ -26,7 +26,7 @@ class ProfileTestCase(BaseTestCase):
                          'Set password on healthchecks.io')
         self.assertIn("Here's a link to set a password", mail.outbox[0].body)
 
-    def test_it_sends_report(self):
+    def test_it_sends_monthly_report(self):
         """ Creates a check for the user, sends a report and verifies that an
         email with this check as a content is sent to the user """
 
@@ -35,6 +35,32 @@ class ProfileTestCase(BaseTestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, 'Monthly Report')
         self.assertIn("This is a monthly report sent by healthchecks.io.",
+                      mail.outbox[0].body)
+
+    def test_it_sends_daily_report(self):
+        """ Creates a check for the user, sends a report and verifies that an
+        email with this check as a content is sent to the user """
+
+        Check(name="Test Check", user=self.alice, ).save()
+        self.alice.profile.daily_reports_allowed = True
+        self.alice.profile.save()
+        self.alice.profile.send_report()
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Daily Report')
+        self.assertIn("This is a daily report sent by healthchecks.io.",
+                      mail.outbox[0].body)
+
+    def test_it_sends_weekly_report(self):
+        """ Creates a check for the user, sends a report and verifies that an
+        email with this check as a content is sent to the user """
+
+        Check(name="Test Check", user=self.alice).save()
+        self.alice.profile.weekly_reports_allowed = True
+        self.alice.profile.save()
+        self.alice.profile.send_report()
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Weekly Report')
+        self.assertIn("This is a weekly report sent by healthchecks.io.",
                       mail.outbox[0].body)
 
     def test_it_adds_team_member(self):
