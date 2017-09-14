@@ -9,6 +9,7 @@
             <span class="checks-subline">Grace</span>
         </th>
         <th>Last Ping</th>
+        <th>Priority</th>
         <th></th>
     </tr>
     {% for check in checks %}
@@ -73,6 +74,19 @@
             Never
         {% endif %}
         </td>
+        <td class="name-cell">
+            <div data-priority="{{ check.priority }}"
+                    data-url="{% url 'hc-update-priority' check.code %}"
+                    class="check-priority">
+                {% if check.priority == 1 %}
+                    Low
+                {% elif check.priority == 2 %}
+                    Normal
+                {% else %}
+                    High
+                {% endif %}
+            </div>
+        </td>
         <td>
             <div class="check-menu dropdown">
                 <button class="btn btn-sm btn-default dropdown-toggle" type="button" data-toggle="dropdown">
@@ -86,6 +100,14 @@
                            Pause Monitoring
                         </a>
                     </li>
+                    <li> 
+                        <a href="#"
+                        class="escalation-matrix"
+                        data-enabled="{{ check.escalation_enabled }}"
+                        data-interval="{{ check.escalation_interval.total_seconds }}"
+                        data-list="{{ check.escalation_list }}"
+                        data-url="{% url 'hc-escalation-matrix' check.code %}">
+                        Escalation Matrix</a></li>
                     <li role="separator" class="divider"></li>
                     <li>
                         <a href="{% url 'hc-log' check.code %}">
