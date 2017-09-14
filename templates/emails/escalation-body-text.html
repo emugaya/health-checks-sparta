@@ -1,0 +1,12 @@
+Hello,
+
+This is an escalation sent by healthchecks.io.
+The check "{{ check.name_then_code }}" has gone {{ check.get_status }}
+{% if check.get_status == "down" %}
+and is yet to be addressed by {{ check.user.email }}.
+{% endif %}
+
+--
+Regards,
+healthchecks.io
+
