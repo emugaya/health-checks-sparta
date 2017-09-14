@@ -16,7 +16,9 @@ from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
-        TimeoutForm, AddBlogPostForm)
+                            TimeoutForm, AddBlogPostForm,
+                            TimeoutForm, AddBlogPostForm, PriorityForm,
+                            EscalationMatrixForm)
 from hc.front.models import Blog
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from hc.front.models import FAQnAnswers
@@ -33,49 +35,39 @@ def pairwise(iterable):
 @login_required
 def my_checks(request):
     
-    q = Check.objects.filter(user=request.team.user).order_by("created")
+    q = Check.objects.filter(user=request.team.user).order_by("-priority")
     checks = list(q)
+    counter = Counter()
+    down_tags, grace_tags = set(), set()
+    for check in checks:
+        status = check.get_status()
+        for tag in check.tags_list():
+            if tag == "":
+                continue
 
-    if not 'unresolved' in request.get_full_path():
-        
-        counter = Counter()
-        down_tags, grace_tags = set(), set()
-        for check in checks:
-            status = check.get_status()
-            for tag in check.tags_list():
-                if tag == "":
-                    continue
+            counter[tag] += 1
 
-                counter[tag] += 1
-
-                if status == "down":
-                    down_tags.add(tag)
-                elif check.in_grace_period():
-                    grace_tags.add(tag)
-
-        ctx = {
-            "page": "checks",
-            "checks": checks,
+            if status == "down":
+                down_tags.add(tag)
+            elif check.in_grace_period():
+                grace_tags.add(tag)
+    ctx = {
             "now": timezone.now(),
             "tags": counter.most_common(),
             "down_tags": down_tags,
             "grace_tags": grace_tags,
             "ping_endpoint": settings.PING_ENDPOINT
         }
+    if not 'unresolved' in request.get_full_path():
+        ctx["page"] = "checks"
+        ctx["checks"] = checks
     else:
         unresolved = []
         for check in checks:
             if check.get_status() == "down":
                 unresolved.append(check)
-        ctx = {
-            "page": "unresolved",
-            "checks": unresolved,
-            "now": timezone.now(),
-            #"tags": counter.most_common(),
-           # "down_tags": down_tags,
-            #"grace_tags": grace_tags,
-            "ping_endpoint": settings.PING_ENDPOINT
-        }
+        ctx["page"] = "unresolved"
+        ctx["checks"] = unresolved
 
     return render(request, "front/my_checks.html", ctx)
 
@@ -254,6 +246,39 @@ def update_name(request, code):
 
     return redirect("hc-checks")
 
+@login_required
+@uuid_or_400
+def update_priority(request, code):
+    assert request.method == "POST"
+
+    check = get_object_or_404(Check, code=code)
+    if check.user_id != request.team.user.id:
+        return HttpResponseForbidden()
+
+    form = PriorityForm(request.POST)
+    if form.is_valid():
+        check.priority = form.cleaned_data["priority"]
+        check.save()
+
+    return redirect("hc-checks")
+
+@login_required
+@uuid_or_400
+def escalation_matrix(request, code):
+    assert request.method == "POST"
+
+    check = get_object_or_404(Check, code=code)
+    if check.user_id != request.team.user.id:
+        return HttpResponseForbidden()
+
+    form = EscalationMatrixForm(request.POST)
+    if form.is_valid():
+        check.escalation_enabled = form.cleaned_data["enabled"]
+        check.escalation_interval = td(seconds=form.cleaned_data["interval"])
+        check.escalation_list = form.cleaned_data["emails"]
+        check.save()
+
+    return redirect("hc-checks")
 
 @login_required
 @uuid_or_400
