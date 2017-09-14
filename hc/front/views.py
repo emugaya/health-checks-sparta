@@ -16,9 +16,9 @@ from django.utils.six.moves.urllib.parse import urlencode
 from hc.api.decorators import uuid_or_400
 from hc.api.models import DEFAULT_GRACE, DEFAULT_TIMEOUT, Channel, Check, Ping
 from hc.front.forms import (AddChannelForm, AddWebhookForm, NameTagsForm,
-                            TimeoutForm, AddBlogPostForm,
                             TimeoutForm, AddBlogPostForm, PriorityForm,
                             EscalationMatrixForm)
+
 from hc.front.models import Blog
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from hc.front.models import FAQnAnswers
