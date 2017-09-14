@@ -1,11 +1,13 @@
 import logging
 import time
 
+from datetime import timedelta as td
 from concurrent.futures import ThreadPoolExecutor
 from django.core.management.base import BaseCommand
 from django.db import connection
 from django.utils import timezone
 from hc.api.models import Check
+from hc.lib import emails
 
 executor = ThreadPoolExecutor(max_workers=10)
 logger = logging.getLogger(__name__)
@@ -19,6 +21,29 @@ class Command(BaseCommand):
         query = Check.objects.filter(user__isnull=False).select_related("user")
 
         now = timezone.now()
+
+        for check in query:
+            if check.get_status() == "down":
+                if check.escalation_enabled:
+                    if not check.escalation_down:
+                        if not check.escalation_time:
+                            check.escalation_time = now + check.escalation_interval
+                            check.save()
+                        if check.escalation_time <= now:
+                            self.stdout.write(check.name+" is "+check.get_status())
+                            check.escalation_down = True
+                            check.escalation_up = False
+                            check.save()
+                            executor.submit(self.escalate_one(check, now))
+
+            elif check.get_status() == "up":
+                if check.escalation_enabled and not check.escalation_up:
+                    check.escalation_down = False
+                    check.escalation_up = True
+                    check.escalation_time = None
+                    check.save()
+                    executor.submit(self.escalate_one(check, now))
+        
         going_down = query.filter(alert_after__lt=now, status="up")
         going_up = query.filter(alert_after__gt=now, status="down")
         # Don't combine this in one query so Postgres can query using index:
@@ -30,7 +55,15 @@ class Command(BaseCommand):
         for future in futures:
             future.result()
 
+
         return True
+
+    def escalate_one(self, check, now):
+        ctx = {
+            "check": check,
+            "now": now
+        }
+        emails.escalate(check.escalation_list, ctx)
 
     def handle_one(self, check):
         """ Send an alert for a single check.
