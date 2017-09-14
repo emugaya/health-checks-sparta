@@ -21,6 +21,7 @@ STATUSES = (
 )
 DEFAULT_TIMEOUT = td(days=1)
 DEFAULT_GRACE = td(hours=1)
+DEFAULT_ESCALATION_INTERVAL = td(hours=1)
 CHANNEL_KINDS = (("email", "Email"), ("webhook", "Webhook"),
                  ("hipchat", "HipChat"),
                  ("slack", "Slack"), ("pd", "PagerDuty"), ("po", "Pushover"),
@@ -52,6 +53,13 @@ class Check(models.Model):
     last_ping = models.DateTimeField(null=True, blank=True)
     alert_after = models.DateTimeField(null=True, blank=True, editable=False)
     status = models.CharField(max_length=6, choices=STATUSES, default="new")
+    priority = models.IntegerField(default=2)
+    escalation_enabled = models.BooleanField(default=False)
+    escalation_interval = models.DurationField(default=DEFAULT_ESCALATION_INTERVAL)
+    escalation_time = models.DateTimeField(null=True, blank=True)
+    escalation_list = models.TextField(null=True)
+    escalation_down = models.BooleanField(default=False)
+    escalation_up = models.BooleanField(default=False)
 
     def name_then_code(self):
         if self.name:
