@@ -1,0 +1,17 @@
+{% extends "emails/base.html" %}
+{% block content %}
+
+<h1>Hello,</h1>
+<p>
+    This is a notification sent by <a href="https://healthchecks.io">healthchecks.io</a>.
+    <br />
+    The check <strong>{{ check.name_then_code }}</strong>
+    has gone <strong>{{ check.get_status|upper }}</strong>
+    {% if check.get_status == "down" %}
+    and is yet to be addressed by {{ check.user.email }}.
+    {% endif %}
+</p>
+
+<p>Thanks,<br>The Healthchecks<span>.</span>io Team</p>
+{% endblock %}
+
