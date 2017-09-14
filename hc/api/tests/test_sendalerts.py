@@ -18,6 +18,7 @@ class SendAlertsTestCase(BaseTestCase):
             check = Check(user=self.alice, name=name)
             check.alert_after = yesterday
             check.status = "up"
+            check.last_ping = timezone.now()
             check.save()
 
         result = Command().handle_many()
