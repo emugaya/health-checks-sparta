@@ -52,7 +52,8 @@ in development environment.
 
 * create database tables, triggers, superuser:
 
-        $ cd ~/webapps/healthchecks
+        $ cd ~/webapps/health-checks-sparta
+        $ ./manage.py makemigrations accounts payments front api
         $ ./manage.py migrate
         $ ./manage.py ensuretriggers
         $ ./manage.py createsuperuser
